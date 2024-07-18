@@ -1,5 +1,5 @@
-import React from "react";
-import { useState, createContext } from "react";
+import React, { useState, createContext } from "react";
+import alarmSound from "../assets/times-up.mp3"; 
 
 export const SettingsContext = createContext();
 
@@ -7,6 +7,19 @@ function SettingsContextProvider(props) {
   const [pomodoro, setPomodoro] = useState(0);
   const [executing, setExecuting] = useState({});
   const [startAnimate, setStartAnimate] = useState(false);
+  const [alarmPlayed, setAlarmPlayed] = useState(false);
+
+  const playAlarm = () => {
+    if (!alarmPlayed) {
+      const audio = new Audio(alarmSound);
+      audio.play();
+      setAlarmPlayed(true);
+    }
+  };
+
+  const stopAnimate = () => {
+    setStartAnimate(false);
+  };
 
   function setCurrentTimer(active_state) {
     updateExecute({
@@ -64,6 +77,25 @@ function SettingsContextProvider(props) {
     setStartAnimate(false);
   }
 
+  // return (
+  //   <SettingsContext.Provider
+  //     value={{
+  //       pomodoro,
+  //       executing,
+  //       updateExecute,
+  //       startAnimate,
+  //       startTimer,
+  //       pauseTimer,
+  //       children,
+  //       SettingsBtn,
+  //       setCurrentTimer,
+  //       stopAimate,
+  //     }}
+  //   >
+  //     {props.children}
+  //   </SettingsContext.Provider>
+  // );
+
   return (
     <SettingsContext.Provider
       value={{
@@ -76,7 +108,8 @@ function SettingsContextProvider(props) {
         children,
         SettingsBtn,
         setCurrentTimer,
-        stopAimate,
+        stopAnimate,
+        playAlarm,
       }}
     >
       {props.children}
